@@ -2,6 +2,7 @@
 .azure
 *_env
 *.bat
+*.env
 
 # specific file
 utext.txt

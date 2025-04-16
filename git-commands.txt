@@ -1,0 +1,190 @@
+## Some git commands
+git status   ## Shows the status of branch
+##################################################################################################
+#################################  git config   #####################################################
+Git --version  #(check healthy install)
+Git config --global user.name "ks"  ##set your user name
+Git config --global user.email "ksgmail"   ## Set your password
+Git config --global --list   ## Shows config settings
+#################################  git init   #####################################################
+git init   ## Go to the directory that contains your project files and run the git init command
+git init ＜your-repository-nam＞  ## You can also provide a repository name with the git init command
+
+#################################  git clone   #####################################################
+git clone ＜git-repo-url＞   ## This command will add the original location as a remote location
+#################################  git remote   #####################################################
+git remote add origin https://dev.azure.com/NonProdOrg/terraform-cicd/_git/terraform-cicd  ## adds a remote orogin
+git remote show origin ## shows the remote origin
+git remote -v  ## shows the remote for fetch and push
+git remote show upstream  ## Shows the upstream
+#################################  git branch   #####################################################
+git branch -a   ## List all the local and remote branches
+git branch -r  ## Shows the name of all remote branches that Git is tracking
+git branch --list ## View all branches and see which branch you’re currently working on
+git branch dev  ## creates a new branch called dev in the repo
+git check out dev  ## switch to newly created brnach called dev
+git branch -d ＜branch-name＞  ## delete a branch
+git branch -m ＜branch-name＞ ＜new-branch-name＞   ## Rename a branch
+
+#################################  git checkout   #####################################################
+git checkout -b ＜new-branch＞ ## create a new branch and switch to it
+git checkout -b dev
+git checkout -b ＜new-branch＞ ＜existing-branch＞  ## if you want to base the new branch from existing branch
+
+#################################  git add   ##########################################################
+##The git adds command adds your changes in a file to the staging area where you can compare your local
+## version and the version on the remote repository.
+## Before you commit your new or modified file,
+## it should be added to the staging area by using the git add command.
+#########################################################################################################
+git add ＜file-name1＞  ＜file-name2＞   ## Add specific files to staging area
+git add -A ## Add all new, modified, and deleted files
+git add . #adds all files that are changed or new to staged
+git add -u  ## Add modified and deleted files
+#################################  git commit   ##########################################################
+git commit -m “<commit-message>”  ## Commit files with a message
+git commit -am “<commit-message>”  ## Commit any files added with the git add command and files that have been changed since then
+git commit --amend -m “<commit-message>"  ## Modify the last commit with the latest changes as a new commit
+#################################  git push   #############################################################
+## The git push command pushes the committed file changes from the local repository
+## to the remote repository so others can use them. It will also create a named branch
+## in the remote repository if it does not exist.
+############################################################################################################
+git push or git push ＜remote＞ ＜branch-name＞  ## create a named branch in the remote repository if it does not exist
+git push --set-upstream ＜remote＞ ＜branch-name＞ ## Push to a newly created branch
+git push -u origin ＜branch-name＞  ## Push to a newly created branch
+#################################  git pull   #############################################################
+git pull or
+git pull ＜remote＞
+git pull ＜remote＞ ＜branch-name＞  ## gets the latest changes from specific branch
+git pull origin main  ## gets the latest changes from remote origin
+function git-sync {git push origin master; git pull origin master}
+#################################  git merge   #############################################################
+## The git merge command merges your branch with the parent branch.
+## The parent branch can either be a development or master branch depending on your workflow.
+## It will automatically create a new commit if there are no conflicts.
+##Before running the git merge command, you should be on the specific branch you want to merge with your parent branch.
+##############################################################################################################
+git checkout ＜branch-name＞  #Switch to the branch that you want to merge everything in
+git pull or git fetch  ## Command to fetch the latest updates
+git merge ＜branch-name＞  ## If there are no conflicts while pulling the updates, you can merge your branch into the parent branch
+###################################### git log ############################################################
+git log
+git log origin/main  ## You can find out the remote repository log
+git log --graph --oneline --all  #  get the commit log to show as a graph for all branches
+function git-graph {git log --oneline --decorate --graph --all} #make this easier to use again
+###################################### git status ############################################################
+## Your current branch name.
+## Whether your current branch is up to date or not.
+## Number of commits that your branch is behind its remote branch.
+## Changes that are staged and to be committed.
+## Changes that are not staged for commit.
+## Un-tracked files.
+git status   ## Shows the status of branch
+
+
+========================================================================================
+
+
+#open code in d:\scratch\storagerepo
+Git --version  #(check healthy install)
+Git config --global user.name "Your Name"
+Git config --global user.email "your@email.com"
+Git config --global --list
+
+#copy in storage account arm template to subfolder ARMTemplates
+#No git yet. Notice in source control tab offers to init the repo or publish to github
+git init
+
+#now have .git folder that stores all the information
+cd ARMTemplates
+
+#We now have our 3 key areas. The working tree (our folder),
+#staging area (changes we want staged for next commit) and the history (our commits)
+git status #shows untracked content
+git add StorageAccount.json
+git status #now shows as staged
+
+#commit with comment (this is creating a new snapshot)
+git commit -m "add the StorageAccount.json file"
+
+#notice hash shown (first 7 characters)
+git status
+
+#detailed information on previous commits
+git log
+
+#better version to get overview of complete history
+git log --oneline --decorate --graph --all
+
+#make this easier to use again (and yes, bad verb I know :-))
+function git-graph {git log --oneline --decorate --graph --all}
+
+#notice we have the master (main) branch (default to snapshot) and a HEAD pointer
+#HEAD pointer tells git what branch we are working on so as one branch points to master
+#have the master branch checked out, can change this
+#Change the template default replication and save
+#note vscode is tracking there is now unstaged and could do from here, also can see diff in vscode
+git status
+git diff
+
+#Lets stage
+git add . #adds all files that are changed or new to staged
+git diff --staged #changes between staged and latest commit
+git commit -m "updated default replication type to GRS for StorageAccount.json file"
+git-graph
+git log
+git log -p #see the changes then q to quit
+
+#if had files to remove can do things like git rm <file> then commit etc
+#can also checkout commits to restore etc
+#add secrets.txt which i don't want in git (note use a vault instead)
+git status
+
+#add .gitignore to the folder and put in secrets.txt and save
+git status
+
+#notice in code secrets no longer tracked as well but add .gitignore
+git add .
+git commit -m ".gitignore file added"
+
+#may want to work on something not in the master/main branch
+#Can create a new branch to work on something
+git branch zrswork
+git-graph #notice zrswork points to same commit as master
+git checkout zrswork #head now points to zrswork branch
+
+#change json
+git add .
+git commit -m "updated to zrs" #will use this ZRS value later in deploy!!
+git-graph #now we see we are ahead of master
+
+#once happy we could fast-forward since its direct from master and no other changes
+#if were other branches then would need a three-way merge which may have conflicts you would resolve
+git checkout master
+git diff master..zrswork
+git merge zrswork #notice fast forward, if not would be recursive
+git branch --merged #can see they are merged so can delete zrswork
+git branch -d zrswork #now delete the unrequired branch as work complete
+
+
+#integrate with github
+cd ..
+echo "# storagetemplate" >> README.md
+git add README.md
+git commit -m "added readme"
+git remote add origin https://github.com/youraccount/yourrepo.git
+git remote -v
+
+#either
+git push origin master #pushing to origin to remote master branch
+
+#or BETTER which also sets the remote as the upstream remote so can just to get pull in future
+git push -u origin master
+
+#will make you authenticate since doing push the first time
+git-graph
+git remote show origin
+
+git pull origin master #get any updates from remote
+#Note in github have the code download which gives clone url so anyone can copy

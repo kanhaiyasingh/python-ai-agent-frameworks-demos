@@ -7,7 +7,9 @@ from dotenv import load_dotenv
 from langchain_core.messages import HumanMessage
 from langchain_core.tools import tool
 from langchain_openai import AzureChatOpenAI, ChatOpenAI
-from langgraph.checkpoint.memory import MemorySaver
+#from langgraph.checkpoint import MemorySaver
+# OR
+from langgraph.memory import MemorySaver
 from langgraph.graph import END, START, MessagesState, StateGraph
 from langgraph.prebuilt import ToolNode
 
